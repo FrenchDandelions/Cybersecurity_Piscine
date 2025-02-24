@@ -1,0 +1,1 @@
+print(*('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp'))
