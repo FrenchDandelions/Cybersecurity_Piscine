@@ -61,5 +61,5 @@ class bcolors:
     BRIGHT_WHITE = '\033[97m'  # Bright White
 
 
-def cc(s, ed=""):
+def _change_color(s, ed=""):
     print(s, end=ed)

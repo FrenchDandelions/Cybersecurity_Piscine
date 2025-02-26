@@ -47,8 +47,8 @@ class Arguments:
 
         parser.add_argument("url", type=str, nargs=1, help=help_map[0])
         parser.add_argument("-r", action="store_true", help=help_map[1])
-        parser.add_argument("-l", type=int, nargs="?", default=5, help=help_map[2])
-        parser.add_argument("-p", type=str, nargs="?", default="./data/", help=help_map[3])
+        parser.add_argument("-l", type=int, nargs="?", const=5, default=5, help=help_map[2])
+        parser.add_argument("-p", type=str, nargs="?", const="./data/", default="./data/", help=help_map[3])
 
         args = parser.parse_args()
 
@@ -83,5 +83,5 @@ def _print_header(color, text):
     print(color + "*" * 45)
 
 
-def cc(s, ed=""):
+def _change_color(s, ed=""):
     print(s, end=ed)

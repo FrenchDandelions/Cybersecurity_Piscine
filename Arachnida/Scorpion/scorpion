@@ -1,6 +1,8 @@
+#!/usr/bin/env python3
+
 from PIL import Image
 from PIL.ExifTags import TAGS
-from utils import Arguments, bcolors, cc
+from utils import Arguments, bcolors, _change_color
 
 
 class Scorpion(Arguments):
@@ -25,7 +27,7 @@ class Scorpion(Arguments):
 
     def decrypt(self):
         for n, img_name in enumerate(self.image):
-            cc(bcolors.BRIGHT_CYAN)
+            _change_color(bcolors.BRIGHT_CYAN)
             text = f"Image {n}"
             centered_text = text.center(40, "*")
             print(centered_text + bcolors.ENDC, end="\n\n")
@@ -35,13 +37,13 @@ class Scorpion(Arguments):
 
             for label,value in data.items():
                 if label == "Filename":
-                    cc(bcolors.BRIGHT_GREEN)
+                    _change_color(bcolors.BRIGHT_GREEN)
                     print(f"{value}".center(40, " "), end="\n\n")
-                    cc(bcolors.ENDC)
+                    _change_color(bcolors.ENDC)
                 else:
                     print(f"{label:25}: {value}")
             
-            cc(bcolors.ENDC, ed="\n")
+            _change_color(bcolors.ENDC, ed="\n")
             
             text = "EXIF METADATA"
             centered_text = text.center(40, ".")

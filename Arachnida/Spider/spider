@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
+
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
-from utils import Arguments, bcolors, _print_header, cc
+from utils import Arguments, bcolors, _print_header, _change_color
 import os, uuid
 
 
@@ -38,18 +40,18 @@ class Spider(Arguments):
                 content_type = response.headers.get("Content-Type", "").lower()
                 if not file.lower().endswith(self.extensions):
                     if content_type not in (self.content_type):
-                        cc(bcolors.FAIL)
+                        _change_color(bcolors.FAIL)
                         print("WRONG CONTENT TYPE->", content_type)
-                        cc(bcolors.WARNING)
+                        _change_color(bcolors.WARNING)
                         continue
                     file = f'default_{uuid.uuid4().hex}.' + content_type.split("/")[-1]
                     print("No extension found, now ->", file)
                 img_data = response.content
                 with open(os.path.join(self.path, file), 'wb') as handler:
                     handler.write(img_data)
-                cc(bcolors.OKCYAN)
+                _change_color(bcolors.OKCYAN)
                 print(f"New image {img} downloaded! :)")
-                cc(bcolors.WARNING)
+                _change_color(bcolors.WARNING)
             except Exception as e:
                 print(f"Couldn't download the image '{img}' because it was inaccessible, sorry :((")
         return
@@ -57,13 +59,13 @@ class Spider(Arguments):
     def get_images(self, url, curr_depth):
 
         try:
-            cc(bcolors.FAIL)
+            _change_color(bcolors.FAIL)
             print("\nCurr_depth =", curr_depth)
-            cc(bcolors.ENDC)
+            _change_color(bcolors.ENDC)
             response = requests.get(url)
-            cc(bcolors.OKBLUE, ed="\n")
+            _change_color(bcolors.OKBLUE, ed="\n")
             print("Response URL : ", response.url)
-            cc(bcolors.OKGREEN)
+            _change_color(bcolors.OKGREEN)
             print(response, end="\n\n")
 
             soup = BeautifulSoup(response.content, "html.parser")
@@ -71,14 +73,14 @@ class Spider(Arguments):
                 imgs = soup.find_all('img')
                 imgs = get_content(url, imgs, "src")
                 links = soup.find_all('a', href=True)
-                cc(bcolors.WARNING)
+                _change_color(bcolors.WARNING)
                 links = get_content(url, links, "href")
                 self.download_images(imgs)
-                if curr_depth == 0:
-                    print("Number of links:", len(links))
+                # if curr_depth == 0:
+                    # print("Number of links:", len(links))
                 if self.recursive == True and curr_depth + 1 <= self.max_depth:
                     if len(links):
-                        cc(bcolors.ENDC)
+                        _change_color(bcolors.ENDC)
                         for link in links:
                             if link in self.already_done_links:
                                 print("Already visited this link, continuing...")
@@ -86,9 +88,9 @@ class Spider(Arguments):
                             self.already_done_links.append(link)
                             self.get_images(link, curr_depth + 1)
             else:
-                cc(bcolors.ENDC)
+                _change_color(bcolors.ENDC)
                 return
-            cc(bcolors.ENDC)
+            _change_color(bcolors.ENDC)
             return
         except Exception as e:
             print(f"Couldn't access URL '{url}' because it was inaccessible, sorry :((")
