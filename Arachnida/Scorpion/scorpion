@@ -53,6 +53,9 @@ class Scorpion(Arguments):
             if len(exifdata) == 0:
                 print("n/a".center(40, " "))
 
+            # for tag_id in exifdata:
+                # print(tag_id, exifdata.get(tag_id), sep=" : ")
+            
             for tag_id in exifdata:
                 tag = TAGS.get(tag_id, tag_id)
                 data = exifdata.get(tag_id)
