@@ -16,9 +16,9 @@ class HOTP:
         if self.verbose == True:
             print_header("HOTP ALGO")
             if self.color == True:
-                print_key_value("KEY =>", base64.b32encode(self.key), bcolors.GREEN)
+                print_key_value("Base32 secret:", base64.b32encode(self.key).decode(), bcolors.GREEN)
             else:
-                print_key_value("KEY =>", base64.b32encode(self.key))
+                print_key_value("Base32 secret:", base64.b32encode(self.key).decode())
 
         self.counter_value = counter_value
         self.len_pwd = len_pwd
@@ -65,15 +65,21 @@ class HOTP:
 
 
 class TOTP(Argument):
-    def __init__(self, timer=30, verbose=False, color=False):
+    def __init__(self, timer=30, verbose=False, color=False, path_fernet_key="~/.hidden_fernet_key.key", arg=None):
 
         self.verbose = verbose
         self.color = color
 
-        super().__init__()
+        super().__init__(arg=arg)
 
+        if self.fernet_key_file == None:
+            self.hidden_file = os.path.expanduser(path_fernet_key)
+        else:
+            self.hidden_file = os.path.expanduser(self.fernet_key_file)
+        
         self.time_value = timer # this is in seconds
         self.key = ""
+
 
 
     def run(self):
@@ -84,9 +90,13 @@ class TOTP(Argument):
     
     
     def get_decryption(self):
+        with open(self.hidden_file, "r") as f:
+            fernet_key = f.read()
+        fernet = Fernet(fernet_key)
         with open("ft_otp.key", "rb") as f:
             encryption = f.read()
-        return encryption
+        decryption = fernet.decrypt(encryption)
+        return decryption
 
 
     def totp(self):
@@ -111,10 +121,11 @@ class TOTP(Argument):
 
         if self.verbose == True:
             color = bcolors.BRIGHT_MAGENTA if self.color == True else ""
-            print_key_value("Decrypted key:", self.key, color)
+            print_key_value("Base32 secret:", self.key.decode(), color)
         totp = self.totp()
         if self.verbose == True:
-            print("Generated OTP:", totp)
+            color = bcolors.GREEN if self.color == True else ""
+            print_key_value("Generated OTP:", totp, color)
 
         print_header("Password generated!")
 
@@ -130,6 +141,10 @@ class TOTP(Argument):
 
 
     def generate_key(self):
+        fkey = Fernet.generate_key()
+        with open(self.hidden_file, "wb") as f:
+            f.write(fkey)
+        fernet = Fernet(fkey)
         file = ""
         with open(self.file, 'rb') as f:
             file = f.read()
@@ -144,6 +159,7 @@ class TOTP(Argument):
 
         decoded_key = bytes.fromhex(s)
         encrypt_key = base64.b32encode(decoded_key)
+        encrypt_key = fernet.encrypt(encrypt_key)
         with open("ft_otp.key", 'wb') as f:
             f.write(encrypt_key)
         print()

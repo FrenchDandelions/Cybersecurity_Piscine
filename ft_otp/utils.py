@@ -2,7 +2,7 @@ import argparse
 
 
 class Argument():
-    def __init__(self):
+    def __init__(self, arg=None):
 
         parser = argparse.ArgumentParser()
         group = parser.add_mutually_exclusive_group(required=True)
@@ -12,8 +12,11 @@ class Argument():
         parser.add_argument("file", type=str)
         parser.add_argument("-v", action="store_true")
         parser.add_argument("-c", action="store_true")
+        parser.add_argument("-f", type=str,  help="This arg requires a file path to store the encrypt key")
 
-        args = parser.parse_args()
+        if arg == None:
+            args = parser.parse_args()
+        else : args = parser.parse_args(arg)
 
         # True if we have to create new password, False if
         # we have to create a new key
@@ -21,6 +24,7 @@ class Argument():
         self.file = args.file
         self.verbose = args.v
         self.color = args.c
+        self.fernet_key_file = args.f
         # print(args)
         # print(args.g, args.k)
         pass
