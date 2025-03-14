@@ -5,21 +5,33 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         .background {
-            background-color: purple;
+            background-image: url("./taylor.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 100vh;
+            height: 100%;
+            width: 100%;
+            position: relative;
             color: white;
+        }
+
+        .content {
+            position: absolute;
+            top: 15%;
+            /* Adjust this value to position the text above the middle */
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
         }
     </style>
 </head>
 
 <body>
-    <div class="background" style="width:100vw; height:100vh;">
-        <div class="d-flex align-items-center justify-content-center row">
-            <!-- <div> -->
-            <h1 class="text-center">Welcome !</h1>
-            <!-- </div> -->
-            <!-- <div> -->
-            <h2 class="text-center">Your Onion server was set up correctly</h2>
+    <div class="background">
+        <div class="content">
+            <h1 class="m-2">Welcome!</h1>
+            <h2 class="">Everything Worked! :D</h2>
         </div>
-        <!-- </div> -->
     </div>
 </body>

@@ -3,6 +3,7 @@ FROM nginx:1.27.1
 COPY ./srcs/nginx.conf /etc/nginx/nginx.conf
 
 COPY ./srcs/index.html /usr/share/nginx/html
+COPY ./srcs/taylor.jpg /usr/share/nginx/html
 
 RUN apt install apt-transport-https
 
@@ -17,12 +18,18 @@ RUN echo "\
     Signed-By: /usr/share/keyrings/deb.torproject.org-keyring.gpg\
     " | tee -a /etc/apt/sources.list.d/tor.sources > /dev/null
 
-RUN apt update -y && apt list --upgradable && apt install -y tor systemctl
+RUN apt update -y && apt list --upgradable && apt install -y tor
 
 COPY ./srcs/torrc /etc/tor/torrc
 
-RUN systemctl start tor
+RUN mkdir /var/lib/tor/hidden_service && chmod 700 /var/lib/tor/hidden_service
+
+RUN chown -R debian-tor:debian-tor /var/lib/tor/hidden_service
 
 RUN rm -rf /etc/nginx/sites-enabled/default
 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+COPY ./srcs/entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
