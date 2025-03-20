@@ -13,7 +13,7 @@ class Arguments:
         parser.add_argument("-s", "-silent", action="store_true", default=False)
 
         args = parser.parse_args()
-        print(args)
+        # print(args)
         self.help = args.h
         self.version = args.v
         self.reverse = args.r
