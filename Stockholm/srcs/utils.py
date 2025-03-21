@@ -75,3 +75,15 @@ class bcolors:
 
 def _change_color(s, ed=""):
     print(s, end=ed)
+    
+
+def print_content(filename, content):
+    # print()
+    print(filename)
+    print(content)
+    print()
+    
+def print_header(s):
+    print()
+    print(s.center(40, "~"))
+    print()
