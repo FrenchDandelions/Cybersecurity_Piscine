@@ -91,12 +91,15 @@ class Stockholm(Arguments, Extensions):
                 continue
             
             os.rename(f, self.path + file_name + ".ft")
-            # print(f)
         return
     
     def decrypt(self):
         for i in range(len(self.files)):
             f = self.files_ext[i]
+
+            if f.endswith(".ft") != True:
+                continue
+
             content = ""
             with open(f, 'rb') as r:
                 content = r.read()
