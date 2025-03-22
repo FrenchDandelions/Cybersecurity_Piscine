@@ -1,6 +1,7 @@
 all: up
 
 build:
+	cd srcs/ && bash create_files.sh && cd -
 	docker build -t stockholm .
 
 run:
