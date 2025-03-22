@@ -21,6 +21,8 @@ class Stockholm(Arguments, Extensions):
 
         self.iv = "Red-Taylor-Swift"
         self.path = os.path.expanduser("~/infection/")
+        if not os.path.exists(self.path):
+            return
         self.files = [file for file in os.listdir(self.path) if os.path.isfile(self.path + file)]
         self.files_ext = [self.path + f for f in self.files]
         self.retrieve_good_files()
@@ -74,6 +76,10 @@ class Stockholm(Arguments, Extensions):
 
 
     def encrypt(self):
+        if not os.path.exists(self.path):
+            print("The '~/infection' directory doesn't exist.")
+            return
+        
         if self._check_status() == True:
             return
 
@@ -124,6 +130,10 @@ class Stockholm(Arguments, Extensions):
 
 
     def decrypt(self):
+        if not os.path.exists(self.path):
+            print("The '~/infection' directory doesn't exist.")
+            return
+
         if self._check_status() == True:
             return
 
@@ -183,9 +193,9 @@ class Stockholm(Arguments, Extensions):
 
 
 if __name__ == "__main__":
-    try:
+    # try:
         s = Stockholm()
         s.start()
-    except Exception as e:
-        print("Exception Caught:")
-        print(type(e), e)
+    # except Exception as e:
+        # print("Exception Caught:")
+        # print(type(e), e)

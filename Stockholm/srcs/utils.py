@@ -22,17 +22,25 @@ class Arguments:
 
 
     def display_help(self):
-        map_help = ["""◦ The program has the option "-help" or "-h" to display the help.""",
-            """◦ The program has the option "-version" or "-v" to show the version of""",
-            """the program.""",
-            """◦ The program has the option "-reverse" or "-r" followed by the key entered""",
-            """as an argument to reverse the infection.""",
-            """◦ The program shows each encrypted file during the process unless the""",
-            """option is indicated "-silent" or "-s", in which case the program will not produce""",
-            """any output."""
+        map_help = [
+            "",
+            "Usage: ./stockholm [OPTIONS]",
+            "",
+            "Options:",
+            "  -h, --help                  # Display this help menu.",
+            "  -v, --version               # Show the program version.",
+            "  -r, --reverse KEY           # Decrypt files using the provided KEY.",
+            "  -s, --silent                # Run the program without displaying any output.",
+            "",
+            "Example Usage:",
+            "  ./stockholm -h              # Show help menu",
+            "  ./stockholm -v              # Display version",
+            "  ./stockholm -r key          # Decrypt files",
+            "  ./stockholm -s              # Run silently",
+            "",
+            "Note: The decryption key is provided upon execution and saved in 'key.txt'."
         ]
         print(*map_help, sep="\n")
-        return
 
 
     def display_version(self):
