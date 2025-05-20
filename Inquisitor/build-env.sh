@@ -1,0 +1,19 @@
+#!/bin/bash
+
+USER_UID=$(id -u)
+USER_GID=$(id -g)
+LAN_IP=$(hostname -I | awk '{print $1}')
+
+cat << BREAK > .env
+# FTP-SERVER ENV VAR
+PUBLIC_IP=$LAN_IP
+FTP_PASS=123
+FTP_USER=user
+
+# FILEZILLA CLIENT ENV VAR
+PUID=$USER_UID
+PGID=$USER_GID
+TZ=Etc/UTC
+BREAK
+
+echo ".env created with the IP: $LAN_IP, USER_UID: $USER_UID and USER_GUID: $USER_GID!"

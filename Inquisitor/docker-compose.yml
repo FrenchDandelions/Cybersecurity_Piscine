@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  ftp-server:
+    container_name: my-ftp-server
+    env_file:
+      - .env
+    image: garethflowers/ftp-server
+    ports:
+      - "20-21:20-21/tcp"             # FTP control & data ports
+      - "40000-40009:40000-40009/tcp" # For passive mode
+    volumes:
+      - "./ftp-data:/server-ftp"
+    networks:
+      - inquisitor
+    restart: unless-stopped
+
+  filezilla:
+    image: lscr.io/linuxserver/filezilla:latest
+    container_name: filezilla
+    env_file:
+      - .env
+    volumes:
+      - "./filezilla-data:/client-filezilla"
+    ports:
+      - 3000:3000
+      - 3001:3001
+    networks:
+      - inquisitor
+    restart: unless-stopped
+
+  inquisitor:
+    container_name: inquisitor
+    image: inquisitor
+    networks:
+      - inquisitor
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+
+networks:
+  inquisitor:
+    name: inquisitor
+    driver: bridge
